@@ -9,12 +9,7 @@
 
 ;; Set Font and Font Size
 
-(set-face-attribute 'default nil :font "Courier New" :height 125)
-
-(load-theme 'tango-dark)
-
-;; Make ESC quit prompts (If you are used to VIM keybindings)
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(set-face-attribute 'default nil :font "Consolas" :height 125)
 
 ;; Initialize package sources
 
@@ -36,8 +31,20 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+(use-package dracula-theme
+  :config (load-theme 'dracula t))
+
 (column-number-mode)
 (global-display-line-numbers-mode t)
+(show-paren-mode 1)
+
+;; Recent files
+(recentf-mode 1)
+(global-set-key (kbd "C-x C-r") 'recentf-open-files)
+
+;; Redirect backup files to a single directory
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/backups/" t)))
 
 ;; Disable line numbers for some modes.
 (dolist (mode '(org-mode-hook
@@ -46,7 +53,35 @@
 				eshell-mode-hook))
 	(add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+(use-package company
+  :hook (after-init . global-company-mode)
+  :config
+  (setq company-idle-delay 0.2
+        company-minimum-prefix-length 2))
+
+(use-package counsel
+  :bind (("M-x"     . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)
+         ("C-x b"   . counsel-switch-buffer))
+  :config (counsel-mode 1))
+
 (use-package command-log-mode)
+
+;; Common Lisp / SLIME setup
+(use-package slime
+  :init
+  (setq inferior-lisp-program "sbcl")
+  :config
+  (slime-setup '(slime-fancy slime-company slime-quicklisp)))
+
+(use-package slime-company
+  :after (slime company)
+  :config
+  (setq slime-company-completion 'fuzzy))
+
+(use-package paredit
+  :hook ((lisp-mode       . paredit-mode)
+         (slime-repl-mode . paredit-mode)))
 
 (use-package ivy
   :diminish
@@ -66,11 +101,6 @@
   :config
   (ivy-mode 1))
 
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1)
-  :custom (doom-modeline-height 15))
-
 (use-package rainbow-delimiters
 	:hook (prog-mode . rainbow-delimiters-mode))
 
@@ -89,7 +119,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(doom-modeline ivy command-log-mode)))
+ '(package-selected-packages
+   '(company counsel dracula-theme paredit slime-company scala-ts-mode slime ivy command-log-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

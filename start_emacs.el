@@ -3,5 +3,6 @@
 (setq user-init-file "C:\Users\eaand\.emacs.d\init.el")
 (setq user-emacs-directory "C:\Users\eaand\.emacs.d")
 (setq default-directory "C:\Users\eaand\")
+(setq inferior-lisp-program "/opt/sbcl/bin/sbcl")
 (setenv "HOME" "C:\Users\eaand\")
 (load user-init-file)
