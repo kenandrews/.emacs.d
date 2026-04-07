@@ -1,0 +1,6 @@
+elpa/
+backups/
+auto-save-list/
+recentf
+eln-cache/
+*.elc
