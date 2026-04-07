@@ -10,6 +10,7 @@
 ;; Set Font and Font Size
 (set-face-attribute 'default nil :font "Consolas" :height 125)
 
+
 ;; Initialize package sources
 (require 'package)
 
@@ -105,18 +106,6 @@
   :config
   (org-roam-db-autosync-mode))
 
-;; eat - terminal emulator (required by claude-code.el)
-(use-package eat
-  :hook (eshell-load . eat-eshell-mode))
-
-;; inheritenv - environment inheritance (required by claude-code.el)
-(use-package inheritenv)
-
-;; claude-code.el - Claude Code CLI integration
-(use-package claude-code
-  :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
-  :after (eat inheritenv)
-  :bind-keymap ("C-c c" . claude-code-command-map))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
