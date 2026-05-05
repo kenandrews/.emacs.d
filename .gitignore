@@ -1,8 +1,12 @@
 elpa/
 backups/
 auto-save-list/
+org-persist/
 recentf
 eln-cache/
 *.elc
 org-roam.db
 projects/
+\#*\#
+.\#*
+*~

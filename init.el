@@ -7,8 +7,13 @@
 (menu-bar-mode -1)      ; Disable menu bar
 (setq visible-bell t)   ; Disable audible bell
 
-;; Set Font and Font Size
-(set-face-attribute 'default nil :font "Consolas" :height 125)
+;; Set Font and Font Size — Consolas on Windows, JetBrains Mono / DejaVu fallback on Linux
+(set-face-attribute 'default nil
+  :font (cond ((find-font (font-spec :name "Consolas"))         "Consolas")
+              ((find-font (font-spec :name "JetBrains Mono"))   "JetBrains Mono")
+              ((find-font (font-spec :name "DejaVu Sans Mono")) "DejaVu Sans Mono")
+              (t "monospace"))
+  :height 125)
 
 
 ;; Initialize package sources
@@ -106,6 +111,16 @@
   :config
   (org-roam-db-autosync-mode))
 
+;; forge — PR/issue review inside magit
+(use-package forge
+  :after magit)
+
+;; writeroom-mode — distraction-free writing
+(use-package writeroom-mode
+  :bind ("C-c W" . writeroom-mode))
+
+;; Knowledge vault org-roam setup (optional — skipped silently if not present)
+(load "~/.knowledge-work/org-roam-setup.el" t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
